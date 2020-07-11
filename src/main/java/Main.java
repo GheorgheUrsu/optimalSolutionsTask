@@ -4,6 +4,8 @@ import model.Customer;
 import service.CsvService;
 import service.CsvServiceImpl;
 
+import java.util.List;
+
 public class Main {
     private static final SQLiteConnection SQLITE_CONNECTION = new SQLiteConnection();
     private static final String URL = "jdbc:sqlite:D:/sqlite/in_memory.db";
@@ -14,6 +16,7 @@ public class Main {
         SQLITE_CONNECTION.createTable(DDL.createTableQuery, URL);
 
         CsvService<Customer> service = new CsvServiceImpl();
-        service.readFile(CSV_FILE);
+        final List<Customer> csvResult = service.readFile(CSV_FILE);
+        service.loadCSV(csvResult);
     }
 }
