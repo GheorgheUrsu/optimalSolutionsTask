@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 public class CsvWriterServiceImpl implements CsvWriterService {
     private final Logger logger = Logger.getLogger(CsvWriterServiceImpl.class.getName());
 
+
     public void writeNonMatchingRecord(final String csvFile,final int columnNumbers) {
         String message = "All records match with number of columns...";
         List<String[]> nonMatchingRecords = Filters.filterNonMatchingRecords(csvFile, columnNumbers);

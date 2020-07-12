@@ -1,16 +1,19 @@
 package service;
 
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import config.CsvLogger;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Filters {
-    private static final Logger logger = Logger.getLogger(Filters.class.getName());
 
     public static List<String[]> filterNonMatchingRecords(final String csvFile, final int columnNumbers) {
         List<String[]> allRows = null;
@@ -21,14 +24,15 @@ public class Filters {
         }
 
         try {
-            reader = new CSVReader(new FileReader(csvFile));
+            reader = new CSVReaderBuilder(new FileReader(csvFile)).withSkipLines(1).build();
 
             allRows = reader.readAll().stream()
-                                      .skip(1L)
+                                      .skip(1)
                                       .filter(arr -> arr.length != columnNumbers)
                                       .map(Filters::filteringCommas)
                                       .collect(Collectors.toList());
-            logger.info(allRows.size() + " records failed");
+
+            CsvLogger.log(Level.INFO,  allRows.size() + " records failed");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,15 +50,22 @@ public class Filters {
 
     public static List<String[]> filterMatchingRecords(final String filePath, final int columnNumbers) {
         CSVReader reader = null;
-        List<String[]> allRows = null;
+        List<String[]> allRows;
+        List<String[]> result = null;
 
+        if (filePath.isEmpty() || filePath.equals(null)) {
+            return Collections.emptyList();
+        }
         try {
-            reader = new CSVReader(new FileReader(filePath));
+            reader = new CSVReaderBuilder(new FileReader(filePath)).withSkipLines(1).build();
 
-            allRows = reader.readAll().stream()
-                                      .skip(1)
-                                      .filter(arr -> arr.length == columnNumbers)
-                                      .collect(Collectors.toList());
+            allRows = reader.readAll();
+            CsvLogger.log(Level.INFO,  allRows.size()-1  + " records received");
+
+            result =allRows.stream()
+                           .skip(1)
+                           .filter(arr -> arr.length == columnNumbers)
+                           .collect(Collectors.toList());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,7 +78,7 @@ public class Filters {
                 }
             }
         }
-        return allRows;
+        return result;
     }
 
     private static String[] filteringCommas(final String[] arr) {

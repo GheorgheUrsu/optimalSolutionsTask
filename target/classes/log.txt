@@ -1,0 +1,12 @@
+Jul 12, 2020 2:06:05 PM config.CsvLogger log
+INFO: 6001 records received
+Jul 12, 2020 2:06:05 PM config.CsvLogger log
+INFO: 5995 of records successful 
+Jul 12, 2020 2:06:05 PM config.CsvLogger log
+INFO: 6 records failed
+Jul 12, 2020 2:14:44 PM config.CsvLogger log
+INFO: 6001 records received
+Jul 12, 2020 2:14:44 PM config.CsvLogger log
+INFO: 5995 of records successful 
+Jul 12, 2020 2:14:44 PM config.CsvLogger log
+INFO: 6 records failed

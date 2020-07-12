@@ -1,22 +1,27 @@
 import database.DDL;
 import database.SQLiteConnection;
-import model.Customer;
-import service.CsvService;
-import service.CsvServiceImpl;
-
-import java.util.List;
+import service.CsvReaderService;
+import service.CsvReaderServiceImpl;
+import service.CsvWriterService;
+import service.CsvWriterServiceImpl;
 
 public class Main {
     private static final SQLiteConnection SQLITE_CONNECTION = new SQLiteConnection();
     private static final String URL = "jdbc:sqlite:D:/sqlite/in_memory.db";
     private static final String CSV_FILE = "file.csv";
+    private final static int COLUMN_NUMBERS = 10;
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
 
         SQLITE_CONNECTION.createTable(DDL.createTableQuery, URL);
 
-        CsvService<Customer> service = new CsvServiceImpl();
-        final List<Customer> csvResult = service.readFile(CSV_FILE);
-        service.loadCSV(csvResult);
+        CsvReaderService service = new CsvReaderServiceImpl();
+
+        service.loadCSV(CSV_FILE, COLUMN_NUMBERS);
+
+        CsvWriterService writer = new CsvWriterServiceImpl();
+        writer.writeNonMatchingRecord(CSV_FILE, COLUMN_NUMBERS);
+
+
     }
 }
