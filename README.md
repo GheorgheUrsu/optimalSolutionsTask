@@ -1,5 +1,5 @@
 # optimalSolutionsTask
-
+Task:
 Customer X just informed us that we need to churn out a code enhancement ASAP for a new project.  Here is what they need:
 
  
@@ -30,16 +30,18 @@ b. # of records successful
 
 c. # of records failed
 
+Tools I used:
+-> Maven build for dependencies and build
+-> openCsv from Apache 2.0
  
-Rules and guidelines:
-
-1) Feel free to use any online resources
-
-2) Utilizing existing tools like Maven and open source libraries is encouraged.
-
-3) A finished solution is great but if you do not get it all completed, that is ok - we will evaluate based on approach
-
-4) It is required that you provide a README detailing the challenge. Your readme should include instructions to run your code, and a brief paragraph describing the approach you took to solve the challenge
-
-
-Write me if you have any questions regarding the task,
+My approaches to solve this task:
+1. establish a connection to SQLite database
+  -> create a table 
+2. implement filters that read CSV file (to find matching/non-matching records)
+  -> Filters.class
+3. load matching records to db 
+  -> I used for this JDBC  batch statement that allows a better performance for bigger data insertions
+4. find element in records that contain commas and double quot them  
+    4.a -> write the to  bad-data-<timestamp>.csv file
+    4.b -> if we don't have any bad record this file won't be created 
+5. Log  the required info with logging.Logger from java.util package
